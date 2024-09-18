@@ -4,7 +4,7 @@ import isAuthenticated from '../middlewares/isAuthenticated.js';
 const router = express.Router();
 
 // Define routes and map to controller methods
-router.route('/complaints').post (isAuthenticated,createComplaint);
+router.route('/').post (createComplaint);
 
 
 // router.route('/complaints/:id').delete(isAuthenticated,deleteComplaint);

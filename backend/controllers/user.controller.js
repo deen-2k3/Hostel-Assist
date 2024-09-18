@@ -1,7 +1,8 @@
-import express from "express";
+import express, { application } from "express";
 import { User } from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { Complaint } from "../models/complaint.model.js";
 
 export const register = async (req, res) => {
     try {
@@ -109,4 +110,19 @@ export const logout =async(req,res)=>{
     } catch (error) {
         console.log(error);
     }
+}
+ export const todayApplications=async(req,res)=>{
+    try{const startofDay= new Date();
+    startofDay.setHours(0,0,0,0);
+
+    const endOfDay=new Date();
+    endOfDay.setHours(23,59,59,999);
+
+    const applications=await Complaint.find({
+        createdAt:{$gte:startofDay,$lte:endOfDay}
+    });
+    res.json(applications);
+}catch(error){
+    console.log(error);
+}
 }

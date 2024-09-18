@@ -4,7 +4,7 @@ import connectDB from "./utils/db.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import userRoute from "./routes/user.route.js";
-import complaintRoutes from './routes/complaint.route.js';
+import complaintRoutes from "./routes/complaint.route.js";
 
 dotenv.config();
 
@@ -17,14 +17,11 @@ app.use(cookieParser());
 
 // API routes
 app.use("/api/v1/user", userRoute);
-app.use("/api/v1/complaint", complaintRoutes);
-
-
-
+app.use("/api/v1/complaints", complaintRoutes);
 
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-    connectDB();
-    console.log(`Server is running on port ${PORT}`);
+  connectDB();
+  console.log(`Server is running on port ${PORT}`);
 });
