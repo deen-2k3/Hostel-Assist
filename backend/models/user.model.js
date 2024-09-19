@@ -5,29 +5,8 @@ const userSchema =new mongoose.Schema({
         required:true
     },
     email:{
-        type:String,
-        required:true,
-        unique:true
-    },
-    FatherName:{
-        type:String,
-        required:true,
-    },
-    Quid:{
-        type:Number,
-        required:true
-    },
-    PhoneNumber:{
-        type:Number,
-        required:true
-    },
-    Hostel:{
-        type:String,
-        required:true,
-    },
-    roomNo:{
-        type:String,
-        required:true
+          type:String,
+          required:true
     },
     password:{
         type:String,
@@ -37,11 +16,8 @@ const userSchema =new mongoose.Schema({
         type:String,
         enum:['student','warden'],
         required:true
-    },
-    profilePhoto:{
-        type:String,
-        default:""
     }
+   
 
 },{timestamps:true});
 

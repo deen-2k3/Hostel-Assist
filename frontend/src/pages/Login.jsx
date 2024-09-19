@@ -1,7 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import Imgur from "../assets/Imgur.gif";
+import useCustom from "../customHooks/customHook";
 
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [role, setRole] = useState("");
+  
+  const { data, loading, error } = useCustom(
+    "http://localhost:8000/api/v1/user/login",
+    "POST",
+    { email, password, role } // Send form data as the body
+  );
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // The POST request will be triggered by useEffect in useCustom
+  };
+
   return (
     <div className="flex justify-center h-screen">
       <div className="flex w-full h-full">
@@ -13,10 +29,10 @@ const Login = () => {
         {/* Second div taking 50% width for the Login Form */}
         <div className="w-1/2 flex items-center justify-center bg-[#ffebd2]">
           <div className="w-full max-w-md p-8 bg-white rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white  ml-[150px] mb-4">
+            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white ml-[150px] mb-4">
               Login
             </h1>
-            <form className="space-y-4 md:space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
               <div>
                 <label
                   htmlFor="email"
@@ -28,6 +44,8 @@ const Login = () => {
                   type="email"
                   name="email"
                   id="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="name@company.com"
                   required
@@ -44,6 +62,8 @@ const Login = () => {
                   type="password"
                   name="password"
                   id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required
@@ -59,39 +79,15 @@ const Login = () => {
                 <select
                   name="role"
                   id="role"
+                  value={role}
+                  onChange={(e) => setRole(e.target.value)}
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required
                 >
                   <option value="">Select Role</option>
-                  <option value="student">Student</option>
+                  <option value="student">student</option>
                   <option value="admin">Admin</option>
                 </select>
-              </div>
-              <div className="flex items-center justify-between">
-                {/* Remember me */}
-                <div className="flex items-center">
-                  <input
-                    id="remember-me"
-                    type="checkbox"
-                    className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
-                  />
-                  <label
-                    htmlFor="remember-me"
-                    className="ml-2 block text-sm text-gray-900 dark:text-white"
-                  >
-                    Remember me
-                  </label>
-                </div>
-
-                {/* Forgot Password */}
-                <div>
-                  <a
-                    href="#"
-                    className="text-sm font-medium text-primary-600 hover:underline text-white"
-                  >
-                    Forgot password?
-                  </a>
-                </div>
               </div>
               <button
                 type="submit"
@@ -99,6 +95,9 @@ const Login = () => {
               >
                 Login
               </button>
+              {loading && <p>Loading...</p>}
+              {error && <p>{error}</p>}
+              {data && <p>Login Successful!</p>}
             </form>
           </div>
         </div>
