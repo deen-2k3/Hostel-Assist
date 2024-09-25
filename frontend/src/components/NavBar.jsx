@@ -12,9 +12,9 @@ const NavBar = () => {
 
         {/* Links */}
         <div className="w-full md:w-auto flex flex-col md:flex-row gap-4 md:gap-16 items-center">
-          <a href="" className="hover:underline">
-            Home
-          </a>
+          <Link to="/">
+            <button>Home</button>
+          </Link>
           <a href="" className="hover:underline">
             About
           </a>
