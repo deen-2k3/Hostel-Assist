@@ -6,13 +6,18 @@ import cookieParser from "cookie-parser";
 import userRoute from "./routes/user.route.js";
 import complaintRoutes from "./routes/complaint.route.js";
 
-
 dotenv.config();
 
 const app = express();
 
 // Middleware setup
-app.use(cors()); // Enable CORS if needed
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Your frontend URL
+    credentials: true, // Allow cookies to be sent and stored
+  })
+);
+ // Enable CORS if needed
 app.use(express.json());
 app.use(cookieParser());
 

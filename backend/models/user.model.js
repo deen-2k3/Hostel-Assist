@@ -16,6 +16,26 @@ const userSchema =new mongoose.Schema({
         type:String,
         enum:['student','warden'],
         required:true
+    },
+    fatherName:{
+        type:String,
+        required:true
+    },
+    PhoneNumber:{
+        type:Number,
+        required:true
+    },
+    Hostel:{
+        type:String,
+        required:true
+    },
+    roomNo:{
+        type:String,
+        required:true
+    },
+    profilePhoto:{
+        type:String,
+        default:""
     }
    
 

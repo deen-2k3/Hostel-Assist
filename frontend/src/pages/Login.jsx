@@ -1,21 +1,36 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Imgur from "../assets/Imgur.gif";
-import useCustom from "../customHooks/customHook";
-
+import { apiConnector } from "../services/apiConnector";
+import { loginUrl } from "../services/apis";
+import { useNavigate } from "react-router-dom";
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [role, setRole] = useState("");
-  
-  const { data, loading, error } = useCustom(
-    "http://localhost:8000/api/v1/user/login",
-    "POST",
-    { email, password, role } // Send form data as the body
-  );
+  const [data, setData] = useState({
+    email: "",
+    password: "",
+    role: "",
+  });
 
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // The POST request will be triggered by useEffect in useCustom
+
+    try {
+      const res = await apiConnector("POST", loginUrl, data);
+      console.log(res);
+      if (res) {
+        navigate("/");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const onChangeHadler = (e) => {
+    setData({
+      ...data,
+      [e.target.name]: e.target.value,
+    });
   };
 
   return (
@@ -44,8 +59,8 @@ const Login = () => {
                   type="email"
                   name="email"
                   id="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={data.email}
+                  onChange={onChangeHadler}
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="name@company.com"
                   required
@@ -62,8 +77,8 @@ const Login = () => {
                   type="password"
                   name="password"
                   id="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  value={data.password}
+                  onChange={onChangeHadler}
                   placeholder="••••••••"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required
@@ -79,8 +94,8 @@ const Login = () => {
                 <select
                   name="role"
                   id="role"
-                  value={role}
-                  onChange={(e) => setRole(e.target.value)}
+                  value={data.role}
+                  onChange={onChangeHadler}
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required
                 >
@@ -95,9 +110,6 @@ const Login = () => {
               >
                 Login
               </button>
-              {loading && <p>Loading...</p>}
-              {error && <p>{error}</p>}
-              {data && <p>Login Successful!</p>}
             </form>
           </div>
         </div>
