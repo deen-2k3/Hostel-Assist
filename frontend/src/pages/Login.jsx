@@ -101,7 +101,7 @@ const Login = () => {
                 >
                   <option value="">Select Role</option>
                   <option value="student">student</option>
-                  <option value="admin">Admin</option>
+                  <option value="admin">warden</option>
                 </select>
               </div>
               <button
