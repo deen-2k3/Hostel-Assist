@@ -3,16 +3,11 @@ import { User } from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { Complaint } from "../models/complaint.model.js";
-import cloudinary from '../config/cloudinary.js'; // Adjust the path if necessary
+import cloudinary from "../config/cloudinary.js"; // Adjust the path if necessary
 
 export const register = async (req, res) => {
   try {
-    const {
-      fullname,
-      email,
-      password,
-      role,
-    } = req.body;
+    const { fullname, email, password, role } = req.body;
 
     if (!fullname || !email || !password || !role) {
       return res.status(400).json({
@@ -119,25 +114,62 @@ export const logout = async (req, res) => {
   }
 };
 
+export const forgotPassword = async (req, res) => {
+  try {
+    const { email, password, confirmPassword } = req.body;
+    if (!email || !password || !confirmPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "Something is missing",
+      });
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({
+        message: "User not found",
+        success: false,
+      });
+    }
+
+    if (password !== confirmPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "Passwords do not match",
+      });
+    }
+
+    const newPassword = await bcrypt.hash(confirmPassword, 10);
+    user.password = newPassword;
+
+    await user.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Password updated successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
+
 export const UserDetails = async (req, res) => {
   try {
-    const {
-      fatherName,
-      PhoneNumber,
-      Hostel,
-      roomNo,
-    } = req.body;
+    const { fatherName, PhoneNumber, Hostel, roomNo } = req.body;
 
     const profilePhoto = req.file ? req.file.path : null;
 
-
-     if(!fatherName||!PhoneNumber||!Hostel||!roomNo||!profilePhoto){
+    if (!fatherName || !PhoneNumber || !Hostel || !roomNo || !profilePhoto) {
       return res.status(400).json({
-        message:"Something is missing.",
-        success:false
+        message: "Something is missing.",
+        success: false,
       });
-     }
-     const updateDetails =await User.findByIdAndUpdate(
+    }
+    const updateDetails = await User.findByIdAndUpdate(
       req.params.userId,
       {
         fatherName,
@@ -146,29 +178,29 @@ export const UserDetails = async (req, res) => {
         roomNo,
         profilePhoto,
       },
-      {new:true} // to return the updated documnet
-     );
+      { new: true } // to return the updated documnet
+    );
 
-     if(!updateDetails){
+    if (!updateDetails) {
       return res.status(404).json({
-        message:"User not found.",
-        success:false,
+        message: "User not found.",
+        success: false,
       });
-     }
-     return  res.status(200).json({
-      message:"user details updated successfully.",
-      user:updateDetails,
-      success:true,
-     })
-  }catch(error){
-   console.log(error);
-   return res.status(500).json({
-    message:"Error updating user details.",
-    success:false,
-    error:error.message,
-   })
+    }
+    return res.status(200).json({
+      message: "user details updated successfully.",
+      user: updateDetails,
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Error updating user details.",
+      success: false,
+      error: error.message,
+    });
   }
-}
+};
 
 export const todayApplications = async (req, res) => {
   try {

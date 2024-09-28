@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  forgotPassword,
   login,
   logout,
   register,
@@ -18,5 +19,6 @@ router
   .route("/update/:userId")
   .put(upload.single("profilePhoto"), isAuthenticated, UserDetails);
 router.route("/getApplicatoins").get(todayApplications);
+router.route("/forgot").put(forgotPassword);
 
 export default router;

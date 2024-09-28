@@ -15,12 +15,12 @@ const NavBar = () => {
           <Link to="/">
             <button>Home</button>
           </Link>
-          <a href="" className="hover:underline">
+          <Link to="/about" className="hover:underline">
             About
-          </a>
-          <a href="" className="hover:underline">
+          </Link>
+          <Link to="/contact" href="" className="hover:underline">
             Contact
-          </a>
+          </Link>
         </div>
 
         {/* Login and Signup */}

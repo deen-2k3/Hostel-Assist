@@ -1,38 +1,33 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import Imgur from "../assets/Imgur.gif";
+import { useNavigate } from "react-router-dom";
 import { apiConnector } from "../services/apiConnector";
-import { loginUrl } from "../services/apis";
-
-const Login = () => {
+import { forgotUrl } from "../services/apis";
+const Forgot = () => {
   const [data, setData] = useState({
     email: "",
     password: "",
-    role: "",
+    confirmPassword: "",
   });
-
   const navigate = useNavigate();
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await apiConnector("POST", loginUrl, data);
+      const res = await apiConnector("PUT", forgotUrl, data);
       console.log(res);
       if (res) {
-        navigate("/");
+        navigate("/login");
       }
     } catch (error) {
       console.log(error);
     }
   };
-
-  const onChangeHandler = (e) => {
+  const onChangeHadler = (e) => {
     setData({
       ...data,
       [e.target.name]: e.target.value,
     });
   };
-
   return (
     <div className="flex justify-center h-screen">
       <div className="flex w-full h-full">
@@ -44,8 +39,8 @@ const Login = () => {
         {/* Second div taking 50% width for the Login Form */}
         <div className="w-1/2 flex items-center justify-center bg-[#ffebd2]">
           <div className="w-full max-w-md p-8 bg-white rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white ml-[150px] mb-4">
-              Login
+            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white ml-[105px] mb-4">
+              Forgot Password
             </h1>
             <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
               <div>
@@ -60,9 +55,9 @@ const Login = () => {
                   name="email"
                   id="email"
                   value={data.email}
-                  onChange={onChangeHandler}
+                  onChange={onChangeHadler}
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="name@company.com"
+                  placeholder="Enter your emial"
                   required
                 />
               </div>
@@ -71,47 +66,43 @@ const Login = () => {
                   htmlFor="password"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
-                  Password
+                  New Password
                 </label>
                 <input
                   type="password"
                   name="password"
                   id="password"
                   value={data.password}
-                  onChange={onChangeHandler}
+                  onChange={onChangeHadler}
                   placeholder="••••••••"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required
                 />
               </div>
-              <Link to="/forgot" className="text-sm text-white hover:underline">
-                Forgot Password?
-              </Link>
               <div>
                 <label
-                  htmlFor="role"
+                  htmlFor="confirm-password"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
-                  Select Role
+                  confirm-password
                 </label>
-                <select
-                  name="role"
-                  id="role"
-                  value={data.role}
-                  onChange={onChangeHandler}
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  id="confirmPassword"
+                  value={data.confirmPassword}
+                  onChange={onChangeHadler}
+                  placeholder="••••••••"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required
-                >
-                  <option value="">Select Role</option>
-                  <option value="student">student</option>
-                  <option value="admin">warden</option>
-                </select>
+                />
               </div>
+
               <button
                 type="submit"
                 className="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
-                Login
+                Change Password
               </button>
             </form>
           </div>
@@ -121,4 +112,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Forgot;
