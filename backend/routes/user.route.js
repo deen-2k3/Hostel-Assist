@@ -6,6 +6,7 @@ import {
   register,
   todayApplications,
   UserDetails,
+  GetUserDetails
 } from "../controllers/user.controller.js";
 import isAuthenticated from "../middlewares/isAuthenticated.js";
 import upload from "../middlewares/multer.js";
@@ -20,5 +21,6 @@ router
   .put(upload.single("profilePhoto"), isAuthenticated, UserDetails);
 router.route("/getApplicatoins").get(todayApplications);
 router.route("/forgot").put(forgotPassword);
+router.route("/profile").get(isAuthenticated,GetUserDetails)
 
 export default router;

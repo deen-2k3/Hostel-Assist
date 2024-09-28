@@ -218,3 +218,22 @@ export const todayApplications = async (req, res) => {
     console.log(error);
   }
 };
+
+export const GetUserDetails = async (req, res) => {
+  try {
+    const userId = req.id;
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+        success: true,
+      });
+    }
+    res.json(user);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Server error",
+    });
+  }
+};

@@ -1,12 +1,17 @@
 import React from "react";
 import NavBar from "../components/NavBar.jsx";
+import Footer from "../components/Footer.jsx";
+import UserDetailsCard from "../components/UserDetailsCard.jsx";
 
 const Home = () => {
   return (
     <div>
       <NavBar />
 
-      <h1>This is home </h1>
+      <div className="">
+        <UserDetailsCard />
+      </div>
+      <Footer />
     </div>
   );
 };
