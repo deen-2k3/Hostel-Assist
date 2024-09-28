@@ -159,48 +159,64 @@ export const forgotPassword = async (req, res) => {
 
 export const UserDetails = async (req, res) => {
   try {
-    const { fatherName, PhoneNumber, Hostel, roomNo } = req.body;
+    const { fatherName, phoneNumber, hostel, roomNo } = req.body; // Standardized field names
+    const profilePhoto = req.file ? req.file.path : null; // Check if a file is uploaded
 
-    const profilePhoto = req.file ? req.file.path : null;
-
-    if (!fatherName || !PhoneNumber || !Hostel || !roomNo || !profilePhoto) {
+    // Validate required fields
+    if (!fatherName || !phoneNumber || !hostel || !roomNo) {
       return res.status(400).json({
-        message: "Something is missing.",
+        message: "Required fields are missing: Father Name, Phone Number, Hostel, Room No.",
         success: false,
       });
     }
+
+    // Optional: Validate phone number format (assuming 10 digits here)
+    const phoneRegex = /^[0-9]{10}$/;
+    if (!phoneRegex.test(phoneNumber)) {
+      return res.status(400).json({
+        message: "Invalid phone number format. It should be 10 digits.",
+        success: false,
+      });
+    }
+
+    // Update user details
     const updateDetails = await User.findByIdAndUpdate(
-      req.params.userId,
+      req.params.userId, // Fetching the user ID from route parameters
       {
         fatherName,
-        PhoneNumber,
-        Hostel,
+        phoneNumber,
+        hostel,
         roomNo,
         profilePhoto,
       },
-      { new: true } // to return the updated documnet
+      { new: true } // Return the updated document
     );
 
+    // If no user found, return an error
     if (!updateDetails) {
       return res.status(404).json({
         message: "User not found.",
         success: false,
       });
     }
+
+    // Success response
     return res.status(200).json({
-      message: "user details updated successfully.",
+      message: "User details updated successfully.",
       user: updateDetails,
       success: true,
     });
+
   } catch (error) {
-    console.log(error);
+    console.error("Error updating user details: ", error);
     return res.status(500).json({
-      message: "Error updating user details.",
+      message: "An error occurred while updating user details.",
       success: false,
       error: error.message,
     });
   }
 };
+
 
 export const todayApplications = async (req, res) => {
   try {
