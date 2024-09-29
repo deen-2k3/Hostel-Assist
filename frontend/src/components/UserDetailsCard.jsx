@@ -29,16 +29,17 @@ const UserDetailsCard = () => {
 
   return (
     <div className="p-4 bg-gray-300 shadow-md rounded-lg h-screen">
-      <div className="flex flex-col items-center space-x-4">
+      <div className="flex flex-col items-center space-x-4 mt-10">
         <img
           src={data.profileImage || "/default-profile.png"} // Display default if no image
           alt="profile"
-          className="w-16 h-16 rounded-full"
+          className="w-40 h-40 rounded-full shadow-lg"
         />
-        <Link to="/UserDetails" className="text-blue-500 hover:underline">
+        <Link to="/UserDetails" className="text-blue-500 hover:underline mt-6">
           Update Contact Information
         </Link>
       </div>
+      <hr className="w-full h-[2px] text-gray-200 mt-2"/>
       <div className="mt-4 flex flex-col items-center">
         <div className="mb-8 w-full h-4">
           <p className="font-semibold">

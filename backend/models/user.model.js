@@ -21,10 +21,10 @@ const userSchema = new mongoose.Schema(
     fatherName: {
       type: String,
     },
-    PhoneNumber: {
+    phoneNumber: {
       type: Number,
     },
-    Hostel: {
+    hostel: {
       type: String,
     },
     roomNo: {
