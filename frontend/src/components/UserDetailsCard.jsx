@@ -28,7 +28,7 @@ const UserDetailsCard = () => {
   }, []); // Empty dependency array to run the effect only once when the component mounts
 
   return (
-    <div className="p-4 bg-gray-300 shadow-md rounded-lg h-screen">
+    <div className="p-4 bg-[#E7717D] shadow-md rounded-lg h-screen">
       <div className="flex flex-col items-center space-x-4 mt-10">
         <img
           src={data.profileImage || "/default-profile.png"} // Display default if no image

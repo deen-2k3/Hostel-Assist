@@ -12,7 +12,7 @@ const Home = () => {
       <div className="w-1/3 h-full">
         <UserDetailsCard />
       </div>
-      <div className="">
+      <div className="w-2/3">
         <IssueHome/>
       </div>
       </div>
