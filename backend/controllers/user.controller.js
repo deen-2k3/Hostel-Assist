@@ -69,26 +69,26 @@ export const login = async (req, res) => {
         success: false,
       });
     }
-   
-    
-    const token = await jwt.sign({userId: user._id}, process.env.SECRET_KEY, {
+
+    const token = await jwt.sign({ userId: user._id }, process.env.SECRET_KEY, {
       expiresIn: "1d",
     });
 
-    
     return res
       .status(200)
       .cookie("token", token, {
         maxAge: 1 * 24 * 60 * 60 * 1000,
         httpOnly: true,
         sameSite: "strict",
-      }).cookie("userId", user._id.toString(), {  // Set userId cookie here
-        maxAge: 1 * 24 * 60 * 60 * 1000,      // Same expiration time
-        httpOnly: false,                        // Consider using httpOnly for security
+      })
+      .cookie("userId", user._id.toString(), {
+        // Set userId cookie here
+        maxAge: 1 * 24 * 60 * 60 * 1000, // Same expiration time
+        httpOnly: false, // Consider using httpOnly for security
         sameSite: "strict",
       })
       .json({
-        message: `Welcome back ${user.fullname,user.id}`,
+        message: `Welcome back ${(user.fullname, user.id)}`,
         user,
         success: true,
       });
@@ -96,8 +96,6 @@ export const login = async (req, res) => {
     console.log(error);
   }
 };
-
-
 
 export const logout = async (req, res) => {
   try {
@@ -155,24 +153,29 @@ export const forgotPassword = async (req, res) => {
 
 export const UserDetails = async (req, res) => {
   try {
-    const  userId  = req.user._id;
+    const userId = req.user._id;
     const { fatherName, phoneNumber, hostel, roomNo } = req.body;
 
     // Handle the profile photo if it exists
     let profilePhotoUrl;
     if (req.file) {
       // Assuming you're uploading the file and saving its URL
-      profilePhotoUrl = req.file.path; // Adjust this according to your storage strategy
+      profilePhotoUrl = req.file.path;
+      console.log(profilePhotoUrl); // Adjust this according to your storage strategy
     }
 
     // Update user details in the database
-    const updatedUser = await User.findByIdAndUpdate(userId, {
-      fatherName,
-      phoneNumber,
-      hostel,
-      roomNo,
-      profilePhoto: profilePhotoUrl, // Update photo if it exists
-    }, { new: true });
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      {
+        fatherName,
+        phoneNumber,
+        hostel,
+        roomNo,
+        profilePhoto: profilePhotoUrl, // Update photo if it exists
+      },
+      { new: true }
+    );
 
     return res.status(200).json({
       success: true,
@@ -186,7 +189,6 @@ export const UserDetails = async (req, res) => {
     });
   }
 };
-
 
 export const todayApplications = async (req, res) => {
   try {
@@ -207,7 +209,7 @@ export const todayApplications = async (req, res) => {
 
 export const GetUserDetails = async (req, res) => {
   try {
-    const  userId  = req.user._id;
+    const userId = req.user._id;
     const user = await User.findById(userId); // Fetch user by ID
     if (!user) {
       return res.status(404).json({
