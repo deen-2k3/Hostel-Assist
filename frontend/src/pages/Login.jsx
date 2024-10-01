@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Imgur from "../assets/Imgur.gif";
 import { apiConnector } from "../services/apiConnector";
 import { loginUrl } from "../services/apis";
+import Cookies from "js-cookie"; // Import Cookies to manage cookies
 
 const Login = () => {
   const [data, setData] = useState({
@@ -18,7 +19,11 @@ const Login = () => {
     try {
       const res = await apiConnector("POST", loginUrl, data);
       console.log(res);
+      // Add this line to debug
+
       if (res) {
+        const userId = Cookies.get("userId");
+        console.log(userId);
         navigate("/");
       }
     } catch (error) {

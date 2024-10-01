@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { apiConnector } from "../services/apiConnector"; // Assuming you have an apiConnector utility
+import { apiConnector } from "../services/apiConnector"; // Importing the apiConnector utility
 import { userDetailsCardUrl } from "../services/apis"; // URL of the API to fetch user details
 import { Link } from "react-router-dom";
 
@@ -17,15 +17,23 @@ const UserDetailsCard = () => {
     // Function to fetch user details from the API
     const fetchUserDetails = async () => {
       try {
-        const response = await apiConnector("GET", userDetailsCardUrl); // Adjust the request method and URL
-        setData(response.data); // Assuming response contains the user data
+        const token = localStorage.getItem("token"); // Replace with your method of storing the JWT
+        const response = await apiConnector("GET", userDetailsCardUrl, {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include the token in the headers
+          },
+        });
+        setData(response.data); // Set the fetched user data
       } catch (error) {
-        console.log("Error fetching user details:", error);
+        console.log(
+          "Error fetching user details:",
+          error.response ? error.response.data : error.message
+        );
       }
     };
 
     fetchUserDetails();
-  }, []); // Empty dependency array to run the effect only once when the component mounts
+  }, []); // Run effect only once when the component mounts
 
   return (
     <div className="p-4 bg-[#E7717D] shadow-md rounded-lg h-screen">
@@ -39,7 +47,7 @@ const UserDetailsCard = () => {
           Update Contact Information
         </Link>
       </div>
-      <hr className="w-full h-[2px] text-gray-200 mt-2"/>
+      <hr className="w-full h-[2px] text-gray-200 mt-2" />
       <div className="mt-4 flex flex-col items-center">
         <div className="mb-8 w-full h-4">
           <p className="font-semibold">

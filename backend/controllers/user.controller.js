@@ -69,33 +69,26 @@ export const login = async (req, res) => {
         success: false,
       });
     }
-    const tokenDate = {
-      userId: user._id,
-    };
-    const token = await jwt.sign(tokenDate, process.env.SECRET_KEY, {
+   
+    
+    const token = await jwt.sign({userId: user._id}, process.env.SECRET_KEY, {
       expiresIn: "1d",
     });
 
-    user = {
-      _id: user._id,
-      fullname: user.fullname,
-      email: user.email,
-      FatherName: user.FatherName,
-      Quid: user.id,
-      PhoneNumber: user.PhoneNumber,
-      Hostel: user.Hostel,
-      RoomNo: user.RoomNo,
-      role: user.role,
-    };
+    
     return res
       .status(200)
       .cookie("token", token, {
         maxAge: 1 * 24 * 60 * 60 * 1000,
         httpOnly: true,
         sameSite: "strict",
+      }).cookie("userId", user._id.toString(), {  // Set userId cookie here
+        maxAge: 1 * 24 * 60 * 60 * 1000,      // Same expiration time
+        httpOnly: false,                        // Consider using httpOnly for security
+        sameSite: "strict",
       })
       .json({
-        message: `Welcome back ${user.fullname}`,
+        message: `Welcome back ${user.fullname,user.id}`,
         user,
         success: true,
       });
@@ -103,6 +96,9 @@ export const login = async (req, res) => {
     console.log(error);
   }
 };
+
+
+
 export const logout = async (req, res) => {
   try {
     return res.status(200).cookie("token", "", { maxAge: 0 }).json({
@@ -159,60 +155,34 @@ export const forgotPassword = async (req, res) => {
 
 export const UserDetails = async (req, res) => {
   try {
-    const { fatherName, phoneNumber, hostel, roomNo } = req.body; // Standardized field names
-    const profilePhoto = req.file ? req.file.path : null; // Check if a file is uploaded
+    const  userId  = req.user._id;
+    const { fatherName, phoneNumber, hostel, roomNo } = req.body;
 
-    // Validate required fields
-    if (!fatherName || !phoneNumber || !hostel || !roomNo) {
-      return res.status(400).json({
-        message: "Required fields are missing: Father Name, Phone Number, Hostel, Room No.",
-        success: false,
-      });
+    // Handle the profile photo if it exists
+    let profilePhotoUrl;
+    if (req.file) {
+      // Assuming you're uploading the file and saving its URL
+      profilePhotoUrl = req.file.path; // Adjust this according to your storage strategy
     }
 
-    // Optional: Validate phone number format (assuming 10 digits here)
-    const phoneRegex = /^[0-9]{10}$/;
-    if (!phoneRegex.test(phoneNumber)) {
-      return res.status(400).json({
-        message: "Invalid phone number format. It should be 10 digits.",
-        success: false,
-      });
-    }
+    // Update user details in the database
+    const updatedUser = await User.findByIdAndUpdate(userId, {
+      fatherName,
+      phoneNumber,
+      hostel,
+      roomNo,
+      profilePhoto: profilePhotoUrl, // Update photo if it exists
+    }, { new: true });
 
-    // Update user details
-    const updateDetails = await User.findByIdAndUpdate(
-      req.params.userId, // Fetching the user ID from route parameters
-      {
-        fatherName,
-        phoneNumber,
-        hostel,
-        roomNo,
-        profilePhoto,
-      },
-      { new: true } // Return the updated document
-    );
-
-    // If no user found, return an error
-    if (!updateDetails) {
-      return res.status(404).json({
-        message: "User not found.",
-        success: false,
-      });
-    }
-
-    // Success response
     return res.status(200).json({
-      message: "User details updated successfully.",
-      user: updateDetails,
       success: true,
+      data: updatedUser,
     });
-
   } catch (error) {
-    console.error("Error updating user details: ", error);
+    console.error(error);
     return res.status(500).json({
-      message: "An error occurred while updating user details.",
       success: false,
-      error: error.message,
+      message: "Server error",
     });
   }
 };
@@ -237,15 +207,15 @@ export const todayApplications = async (req, res) => {
 
 export const GetUserDetails = async (req, res) => {
   try {
-    const userId = req.id;
-    const user = await User.findById(userId);
+    const  userId  = req.user._id;
+    const user = await User.findById(userId); // Fetch user by ID
     if (!user) {
       return res.status(404).json({
         message: "User not found",
-        success: true,
+        success: false,
       });
     }
-    res.json(user);
+    res.json(user); // Send user data as response
   } catch (error) {
     console.log(error);
     res.status(500).json({

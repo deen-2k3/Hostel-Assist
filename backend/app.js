@@ -5,6 +5,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import userRoute from "./routes/user.route.js";
 import complaintRoutes from "./routes/complaint.route.js";
+import cloudinary from "./config/cloudinary.js"; // Adjust the path if necessary
 
 dotenv.config();
 
@@ -17,7 +18,7 @@ app.use(
     credentials: true, // Allow cookies to be sent and stored
   })
 );
- // Enable CORS if needed
+// Enable CORS if needed
 app.use(express.json());
 app.use(cookieParser());
 

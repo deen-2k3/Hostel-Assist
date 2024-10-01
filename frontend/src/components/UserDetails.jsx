@@ -1,32 +1,67 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie"; // Import Cookies to manage cookies
+import { apiConnector } from "../services/apiConnector";
+import { updateUser } from "../services/apis";
+
 const UserDetails = () => {
   const [data, setData] = useState({
     fatherName: "",
-    PhoneNumber: "",
-    Hostel: "",
+    phoneNumber: "",
+    hostel: "",
     roomNo: "",
     profilePhoto: null,
   });
+
   const navigate = useNavigate();
 
-  // Handle input change
-  const handleChange = async(e) => {
-    const { name, value, files } = e.target;
-    if (name === "profilePhoto") {
-      // Handle file input
-      setData({ ...data, [name]: files[0] });
-    } else {
-      setData({ ...data, [name]: value });
+  // Handle form submit
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Get the userId from cookies
+    const userId = Cookies.get("userId");
+
+    // Replace :userId in the URL
+    const updateUserUrl = updateUser.replace(":userId", userId);
+
+    // Creating a FormData object to handle the file upload
+    const formData = new FormData();
+    formData.append("fatherName", data.fatherName);
+    formData.append("phoneNumber", data.phoneNumber);
+    formData.append("hostel", data.hostel);
+    formData.append("roomNo", data.roomNo);
+    if (data.profilePhoto) {
+      formData.append("profilePhoto", data.profilePhoto);
+    }
+
+    try {
+      const res = await apiConnector("PUT", updateUserUrl, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      console.log(res);
+      if (res) {
+        navigate("/");
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
-  // Handle form submit
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Form Data: ", data);
-    navigate("/");
-    // You can add form submission logic here (e.g., send data to API)
+  // Handle text input changes
+  const handleChange = (e) => {
+    setData({
+      ...data,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  // Handle file input changes
+  const handleFileChange = (e) => {
+    setData({
+      ...data,
+      profilePhoto: e.target.files[0], // Storing the file object
+    });
   };
 
   return (
@@ -106,7 +141,7 @@ const UserDetails = () => {
             type="file"
             name="profilePhoto"
             accept="image/*"
-            onChange={handleChange}
+            onChange={handleFileChange} // Separate handler for file input
             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
         </div>
