@@ -3,7 +3,6 @@ import { User } from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { Complaint } from "../models/complaint.model.js";
-import cloudinary from "../config/cloudinary.js"; // Adjust the path if necessary
 
 export const register = async (req, res) => {
   try {
@@ -158,6 +157,7 @@ export const UserDetails = async (req, res) => {
 
     // Handle the profile photo if it exists
     let profilePhotoUrl;
+    let filename=req.file.filename;
     if (req.file) {
       // Assuming you're uploading the file and saving its URL
       profilePhotoUrl = req.file.path;
