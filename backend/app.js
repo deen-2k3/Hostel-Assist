@@ -5,6 +5,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import userRoute from "./routes/user.route.js";
 import complaintRoutes from "./routes/complaint.route.js";
+import applicationRoutes from './routes/complaintApplication.route.js';  // Adjust the path if necessary
 
 dotenv.config();
 
@@ -23,7 +24,9 @@ app.use(cookieParser());
 
 // API routes
 app.use("/api/v1/user", userRoute);
-app.use("/api/v1/complaints", complaintRoutes);
+app.use("/api/v1/comp", complaintRoutes);
+app.use('/api/v1/app', applicationRoutes);  // Prefix the routes with `/api/v1` for versioning
+
 
 const PORT = process.env.PORT || 3000;
 

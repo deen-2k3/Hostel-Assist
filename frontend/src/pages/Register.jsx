@@ -25,12 +25,14 @@ const Register = () => {
       console.log(error);
     }
   };
-  const onChangeHadler = (e) => {
+
+  const onChangeHandler = (e) => {
     setData({
       ...data,
       [e.target.name]: e.target.value,
     });
   };
+
   return (
     <div>
       <section className="bg-gray-50 dark:bg-[#ffebd2]">
@@ -40,27 +42,23 @@ const Register = () => {
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                 Create an account
               </h1>
-              <form
-                className="space-y-4 md:space-y-6"
-                action="#"
-                onSubmit={handleSubmit}
-              >
-                {/* fullname */}
+              <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
+                {/* Full Name */}
                 <div>
                   <label
                     htmlFor="fullname"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Name
+                    Full Name
                   </label>
                   <input
                     type="text"
                     name="fullname"
-                    id="email"
+                    id="fullname" // Changed to unique ID
                     value={data.fullname}
-                    onChange={onChangeHadler}
+                    onChange={onChangeHandler}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="name@company.com"
+                    placeholder="John Doe" // Updated placeholder
                     required
                   />
                 </div>
@@ -75,9 +73,9 @@ const Register = () => {
                   <input
                     type="email"
                     name="email"
-                    id="email"
+                    id="email" // This ID is fine
                     value={data.email}
-                    onChange={onChangeHadler}
+                    onChange={onChangeHandler}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="name@company.com"
                     required
@@ -95,9 +93,9 @@ const Register = () => {
                   <input
                     type="password"
                     name="password"
-                    id="password"
+                    id="password" // This ID is fine
                     value={data.password}
-                    onChange={onChangeHadler}
+                    onChange={onChangeHandler}
                     placeholder="••••••••"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     required
@@ -114,15 +112,15 @@ const Register = () => {
                   </label>
                   <select
                     name="role"
-                    id="role"
+                    id="role" // This ID is fine
                     value={data.role}
-                    onChange={onChangeHadler}
+                    onChange={onChangeHandler}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     required
                   >
                     <option value="">Select Role</option>
                     <option value="student">student</option>
-                    <option value="admin">warden</option>
+                    <option value="warden">warden</option>
                   </select>
                 </div>
 

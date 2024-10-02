@@ -157,7 +157,6 @@ export const UserDetails = async (req, res) => {
 
     // Handle the profile photo if it exists
     let profilePhotoUrl;
-    let filename=req.file.filename;
     if (req.file) {
       // Assuming you're uploading the file and saving its URL
       profilePhotoUrl = req.file.path;

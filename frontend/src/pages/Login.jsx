@@ -24,7 +24,11 @@ const Login = () => {
       if (res) {
         const userId = Cookies.get("userId");
         console.log(userId);
-        navigate("/");
+        if (data.role === "warden") {
+          navigate("/warden-dashboard"); // Change to your actual warden dashboard path
+        } else {
+          navigate("/");
+        }
       }
     } catch (error) {
       console.log(error);
@@ -109,7 +113,7 @@ const Login = () => {
                 >
                   <option value="">Select Role</option>
                   <option value="student">student</option>
-                  <option value="admin">warden</option>
+                  <option value="warden">warden</option>
                 </select>
               </div>
               <button

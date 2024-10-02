@@ -6,6 +6,7 @@ import Home from "./pages/Home.jsx";
 import Forgot from "./pages/Forgot.jsx";
 import UserDetails from "./components/UserDetails.jsx";
 import Complaint from "./components/Complaint.jsx";
+import WardenDashboard from "./pages/WardenDashboard.jsx";
 function App() {
   return (
     <>
@@ -14,13 +15,11 @@ function App() {
 
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/forgot" element={<Forgot/>} />
-        <Route path="/userDetails" element={<UserDetails/>} />
-        <Route path="/Complaint" element={<Complaint/>} />
-
-
+        <Route path="/forgot" element={<Forgot />} />
+        <Route path="/userDetails" element={<UserDetails />} />
+        <Route path="/Complaint" element={<Complaint />} />
+        <Route path="/warden-dashboard" element={<WardenDashboard />} />
       </Routes>
-     
     </>
   );
 }

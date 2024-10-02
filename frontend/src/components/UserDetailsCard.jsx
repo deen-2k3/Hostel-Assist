@@ -11,7 +11,7 @@ const UserDetailsCard = () => {
     fatherName: "",
     hostel: "",
     roomNo: "",
-    profilePhoto:""
+    profilePhoto: "",
   });
 
   useEffect(() => {
@@ -24,6 +24,8 @@ const UserDetailsCard = () => {
             Authorization: `Bearer ${token}`, // Include the token in the headers
           },
         });
+
+        console.log("API Response:", response); // Log the entire response
         setData(response.data); // Set the fetched user data
       } catch (error) {
         console.log(
@@ -40,7 +42,7 @@ const UserDetailsCard = () => {
     <div className="p-4 bg-[#E7717D] shadow-md rounded-lg h-screen">
       <div className="flex flex-col items-center space-x-4 mt-10">
         <img
-          src={data.profilePhoto.url} // Display default if no image
+          src={data.profilePhoto || "/default-profile.png"} // Display default if no image
           alt="profile"
           className="w-40 h-40 rounded-full shadow-lg"
         />

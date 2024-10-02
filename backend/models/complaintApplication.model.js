@@ -1,18 +1,13 @@
 import mongoose from "mongoose";
 
 const ApplicationSchema=new mongoose.Schema({
-    issue:{
+   complaint:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'Complaint',
-        require:true
-    },
-    applicant:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'User',
+        ref:"Complaint",
         required:true
-    },
+   },
     status:{
-        types:String,
+        type:String,
         enum:['pending','accepted','rejected'],
         default:'pending'
     }

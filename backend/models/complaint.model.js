@@ -8,7 +8,7 @@ const complaintSchema = new mongoose.Schema(
     },
     Applicant: {
       type:mongoose.Schema.Types.ObjectId,
-      ref:'UserDetails',
+      ref:'User',
       required: true,
     },
   
