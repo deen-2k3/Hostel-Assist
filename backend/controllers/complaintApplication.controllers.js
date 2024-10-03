@@ -10,7 +10,7 @@ export const getApplicants = async (req, res) => {
       select: "issue",
       populate: {
         path: "Applicant", // Assuming 'Applicant' is the ref field in Complaint model
-        select: "fullname Hostel roomNo", // Select necessary fields from User model
+        select: "fullname hostel roomNo", // Select necessary fields from User model
       },
     });
 
