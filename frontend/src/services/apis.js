@@ -9,3 +9,5 @@ export const userDetailsCardUrl = baseUrl + "user/profile";
 export const updateUser = baseUrl + "user/update/:userId";
 
 export const complaintofUser=baseUrl+"comp/complaints";
+
+export const getApplications=baseUrl+"app/applications";
