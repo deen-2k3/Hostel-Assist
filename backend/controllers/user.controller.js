@@ -69,9 +69,13 @@ export const login = async (req, res) => {
       });
     }
 
-    const token = await jwt.sign({ userId: user._id }, process.env.SECRET_KEY, {
-      expiresIn: "1d",
-    });
+    const token = await jwt.sign(
+      { userId: user._id, name: user.fullname },
+      process.env.SECRET_KEY,
+      {
+        expiresIn: "1d",
+      }
+    );
 
     return res
       .status(200)
@@ -222,5 +226,28 @@ export const GetUserDetails = async (req, res) => {
     res.status(500).json({
       message: "Server error",
     });
+  }
+};
+
+export const checkAuth = (req, res) => {
+  const token = req.cookies.token;
+  if (!token) {
+    return res.status(401).json({ isAuthenticated: false });
+  }
+
+  try {
+    // Verify and decode the token
+    const decoded = jwt.verify(token, process.env.SECRET_KEY);
+
+    // Optionally verify token and respond with user info
+    return res.status(200).json({
+      isAuthenticated: true,
+      userName: decoded.name, // Assuming name is part of the token payload
+      userId: decoded.userId,
+    });
+  } catch (error) {
+    return res
+      .status(401)
+      .json({ isAuthenticated: false, message: "Invalid token" });
   }
 };
