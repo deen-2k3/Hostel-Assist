@@ -25,11 +25,9 @@ const Login = () => {
         const userId = Cookies.get("userId");
         console.log(userId);
         
-        if (data.role === "warden") {
-          navigate("/warden-dashboard"); // Change to your actual warden dashboard path
-        } else {
+        
           navigate("/");
-        }
+        
       }
     } catch (error) {
       console.log(error);

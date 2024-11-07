@@ -70,7 +70,7 @@ export const login = async (req, res) => {
     }
 
     const token = await jwt.sign(
-      { userId: user._id, name: user.fullname },
+      { userId: user._id, name: user.fullname,role:user.role },
       process.env.SECRET_KEY,
       {
         expiresIn: "1d",
@@ -244,6 +244,7 @@ export const checkAuth = (req, res) => {
       isAuthenticated: true,
       userName: decoded.name, // Assuming name is part of the token payload
       userId: decoded.userId,
+      role:decoded.role,
     });
   } catch (error) {
     return res
