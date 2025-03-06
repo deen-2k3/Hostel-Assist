@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import userRoute from "./routes/user.route.js";
 import complaintRoutes from "./routes/complaint.route.js";
 import applicationRoutes from './routes/complaintApplication.route.js';  // Adjust the path if necessary
+import lostFoundRoutes from "./routes/LostAndFound.route.js"; // Import the routes
 
 dotenv.config();
 
@@ -26,7 +27,7 @@ app.use(cookieParser());
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/comp", complaintRoutes);
 app.use('/api/v1/app', applicationRoutes);  // Prefix the routes with `/api/v1` for versioning
-
+app.use("/api/v1/LostAndFound",lostFoundRoutes);
 
 const PORT = process.env.PORT || 3000;
 
