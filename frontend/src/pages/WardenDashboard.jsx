@@ -8,7 +8,7 @@ const WardenDashboard = () => {
       <NavBar />
       <div className="p-6">
         {/* Dashboard Header */}
-        <h1 className="text-2xl font-bold mb-4">Warden Dashboard</h1>
+        <h1 className="text-2xl font-bold mb-4 mr-60">Warden Dashboard</h1>
 
         {/* Main Content: Get Applications Table */}
         <GetApplications />
