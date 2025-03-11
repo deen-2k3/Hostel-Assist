@@ -3,9 +3,9 @@ import { getMessMenu, updateMenu, submitReview, foodComplaint } from "../control
 
 const router = express.Router();
 
-router.get("/menu", getMessMenu);
+router.get("/getmenu", getMessMenu);
 router.post("/menu", updateMenu);
 router.post("/review", submitReview);
-router.post("/complaint", foodComplaint);
+router.post("/foodcomplaint", foodComplaint);
 
 export default router;
