@@ -32,7 +32,7 @@ const GetuserApplications = () => {
           ? error.response.data.message
           : error.message || "An unknown error occurred";
         setError(errorMessage);
-        console.error("Error fetching applications:", errorMessage);
+        console.error("Error fetching applications:.", errorMessage);
       }
     };
     fetchApplicationstatus();
